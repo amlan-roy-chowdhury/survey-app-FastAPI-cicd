@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', credentialsId: 'github-creds', url: 'https://github.com/amlan-roy-chowdhury/survey-fullstack-cicd.git'
+                git branch: 'main', credentialsId: 'github-creds', url: 'https://github.com/amlan-roy-chowdhury/survey-app-FastAPI-cicd.git'
             }
         }
 
