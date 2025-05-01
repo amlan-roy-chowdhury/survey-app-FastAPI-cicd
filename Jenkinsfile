@@ -16,13 +16,14 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'docker-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                     sh '''
-                        docker buildx build --platform linux/amd64 -t $DOCKER_IMAGE_BACKEND backend
+                        docker buildx build --platform linux/amd64 -f backend/Dockerfile -t $DOCKER_IMAGE_BACKEND backend
                         echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
                         docker push $DOCKER_IMAGE_BACKEND
                     '''
                 }
             }
         }
+
 
         stage('Deploy to Kubernetes') {
             steps {
