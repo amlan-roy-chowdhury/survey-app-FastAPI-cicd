@@ -14,12 +14,12 @@ pipeline {
 
         stage('Build & Push Backend Image') {
             steps {
-                dir('backend') {
-                    withCredentials([usernamePassword(credentialsId: 'docker-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                        sh 'docker buildx build --platform linux/amd64 -t $DOCKER_IMAGE_BACKEND .'
-                        sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
-                        sh 'docker push $DOCKER_IMAGE_BACKEND'
-                    }
+                withCredentials([usernamePassword(credentialsId: 'docker-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh '''
+                        docker buildx build --platform linux/amd64 -t $DOCKER_IMAGE_BACKEND backend
+                        echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                        docker push $DOCKER_IMAGE_BACKEND
+                    '''
                 }
             }
         }
